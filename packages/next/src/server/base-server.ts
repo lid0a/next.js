@@ -256,6 +256,7 @@ export interface Options {
    * The HTTP Server that Next.js is running behind
    */
   httpServer?: HTTPServer
+  onCleanup?: (cb: () => Promise<void>) => void
 }
 
 export type RenderOpts = PagesRenderOptsPartial & AppRenderOptsPartial
@@ -1783,7 +1784,9 @@ export default abstract class Server<
       // so we won't get here.
       return undefined
     }
+  }
 
+  protected getInternalWaitUntil(): WaitUntil | undefined {
     // we're in `next start` or `next dev`. noop is fine for both.
     return Server.noopWaitUntil
   }
